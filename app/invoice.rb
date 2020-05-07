@@ -9,13 +9,7 @@ class Invoice
     result = "Statement for #{invoice['customer']}\n"
 
     invoice['performances'].each do |perf|
-      # add volume credits
-      volume_credits += [perf['audience'] - 30, 0].max
-
-      # add extra credit for every ten comedy attendees
-      if play_for(perf)['type'] == 'comedy'
-        volume_credits += (perf['audience'] / 5).floor
-      end
+      volume_credits += volume_credits_for(perf)
 
       # print line for this order
       result += "  #{play_for(perf)['name']}: " \
@@ -61,5 +55,18 @@ class Invoice
     end
 
     result
+  end
+
+  def self.volume_credits_for(perf)
+    volume_credits = 0
+
+    volume_credits += [perf['audience'] - 30, 0].max
+
+    # add extra credit for every ten comedy attendees
+    if play_for(perf)['type'] == 'comedy'
+      volume_credits += (perf['audience'] / 5).floor
+    end
+
+    volume_credits
   end
 end
