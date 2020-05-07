@@ -2,19 +2,43 @@
 
 class Invoice
   def self.statement(invoice, plays)
-    @invoice = invoice
-    @plays = plays
+    @plays ||= plays
 
-    result = "Statement for #{invoice['customer']}\n"
-    invoice['performances'].each do |perf|
+    statement_data = {}
+
+    statement_data['customer'] = invoice['customer']
+    statement_data['performances'] =
+      invoice['performances'].map { enrich_performance(_1) }
+    statement_data['total_amount'] = total_amount(statement_data)
+    statement_data['total_volume_credits'] =
+      total_volume_credits(statement_data)
+
+    App.logger.debug(statement_data)
+    render_plain_text(statement_data)
+  end
+
+  def self.render_plain_text(data)
+    result = "Statement for #{data['customer']}\n"
+    data['performances'].each do |perf|
       # print line for this order
-      result += "  #{play_for(perf)['name']}: " \
-                "#{usd(amount_for(perf))} "\
+      result += "  #{perf['play']['name']}: " \
+                "#{usd(perf['amount'])} "\
                 "(#{perf['audience']} seats)\n"
     end
 
-    result += "Amount owned is #{usd(total_amount)}\n"
-    result += "You earned #{total_volume_credits} credits\n"
+    result += "Amount owned is #{usd(data['total_amount'])}\n"
+    result += "You earned #{data['total_volume_credits']} credits\n"
+
+    result
+  end
+
+  def self.enrich_performance(a_performance)
+    # https://www.thoughtco.com/making-deep-copies-in-ruby-2907749
+    result = Marshal.load(Marshal.dump(a_performance))
+
+    result['play'] = play_for(result)
+    result['amount'] = amount_for(result)
+    result['volume_credits'] = volume_credits_for(result)
 
     result
   end
@@ -23,23 +47,19 @@ class Invoice
     Money.us_dollar(a_number).format
   end
 
-  def self.total_amount
-    @invoice ||= { 'performances' => [] }
-
+  def self.total_amount(data)
     result = 0
-    @invoice['performances'].each do |perf|
+    data['performances'].each do |perf|
       result += amount_for(perf)
     end
 
     result
   end
 
-  def self.total_volume_credits
-    @invoice ||= { 'performances' => [] }
-
+  def self.total_volume_credits(data)
     result = 0
-    @invoice['performances'].each do |perf|
-      result += volume_credits_for(perf)
+    data['performances'].each do |perf|
+      result += perf['volume_credits']
     end
 
     result
@@ -53,7 +73,7 @@ class Invoice
   def self.amount_for(a_performance)
     result = 0
 
-    case play_for(a_performance)['type']
+    case a_performance['play']['type']
     when 'tragedy'
       result = 40_000
 
@@ -71,7 +91,7 @@ class Invoice
       result += 300 * a_performance['audience']
 
     else
-      raise "unknown type: #{play_for(a_performance)['type']}"
+      raise "unknown type: #{a_performance['play']['type']}"
     end
 
     result
@@ -83,7 +103,7 @@ class Invoice
     result += [a_performance['audience'] - 30, 0].max
 
     # add extra credit for every ten comedy attendees
-    if play_for(a_performance)['type'] == 'comedy'
+    if a_performance['play']['type'] == 'comedy'
       result += (a_performance['audience'] / 5).floor
     end
 
