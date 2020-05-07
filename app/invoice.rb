@@ -13,16 +13,20 @@ class Invoice
 
       # print line for this order
       result += "  #{play_for(perf)['name']}: " \
-                "#{Money.us_dollar(amount_for(perf)).format} "\
+                "#{usd(amount_for(perf))} "\
                 "(#{perf['audience']} seats)\n"
 
       total_amount += amount_for(perf)
     end
 
-    result += "Amount owned is #{Money.us_dollar(total_amount).format}\n"
+    result += "Amount owned is #{usd(total_amount)}\n"
     result += "You earned #{volume_credits} credits\n"
 
     result
+  end
+
+  def self.usd(a_number)
+    Money.us_dollar(a_number).format
   end
 
   def self.play_for(a_performance)
