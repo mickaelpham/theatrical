@@ -9,8 +9,6 @@ class Invoice
     result = "Statement for #{invoice['customer']}\n"
 
     invoice['performances'].each do |perf|
-      this_amount = amount_for(perf)
-
       # add volume credits
       volume_credits += [perf['audience'] - 30, 0].max
 
@@ -21,10 +19,10 @@ class Invoice
 
       # print line for this order
       result += "  #{play_for(perf)['name']}: " \
-                "#{Money.us_dollar(this_amount).format} "\
+                "#{Money.us_dollar(amount_for(perf)).format} "\
                 "(#{perf['audience']} seats)\n"
 
-      total_amount += this_amount
+      total_amount += amount_for(perf)
     end
 
     result += "Amount owned is #{Money.us_dollar(total_amount).format}\n"
