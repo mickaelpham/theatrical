@@ -15,10 +15,13 @@ class Invoice
       volume_credits += [perf['audience'] - 30, 0].max
 
       # add extra credit for every ten comedy attendees
-      volume_credits += (perf['audience'] / 5).floor if play_for(perf)['type'] == 'comedy'
+      if play_for(perf)['type'] == 'comedy'
+        volume_credits += (perf['audience'] / 5).floor
+      end
 
       # print line for this order
-      result += "  #{play_for(perf)['name']}: #{Money.us_dollar(this_amount).format} "\
+      result += "  #{play_for(perf)['name']}: " \
+                "#{Money.us_dollar(this_amount).format} "\
                 "(#{perf['audience']} seats)\n"
 
       total_amount += this_amount
@@ -35,14 +38,16 @@ class Invoice
     @plays[a_performance['playID']]
   end
 
-
   def self.amount_for(a_performance)
     result = 0
 
     case play_for(a_performance)['type']
     when 'tragedy'
       result = 40_000
-      result += 1_000 * (a_performance['audience'] - 30) if a_performance['audience'] > 30
+
+      if a_performance['audience'] > 30
+        result += 1_000 * (a_performance['audience'] - 30)
+      end
 
     when 'comedy'
       result = 30_000
