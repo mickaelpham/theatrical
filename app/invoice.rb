@@ -5,16 +5,12 @@ class Invoice
     @invoice = invoice
     @plays = plays
 
-    total_amount = 0
     result = "Statement for #{invoice['customer']}\n"
-
     invoice['performances'].each do |perf|
       # print line for this order
       result += "  #{play_for(perf)['name']}: " \
                 "#{usd(amount_for(perf))} "\
                 "(#{perf['audience']} seats)\n"
-
-      total_amount += amount_for(perf)
     end
 
     result += "Amount owned is #{usd(total_amount)}\n"
@@ -25,6 +21,17 @@ class Invoice
 
   def self.usd(a_number)
     Money.us_dollar(a_number).format
+  end
+
+  def self.total_amount
+    @invoice ||= { 'performances' => [] }
+
+    result = 0
+    @invoice['performances'].each do |perf|
+      result += amount_for(perf)
+    end
+
+    result
   end
 
   def self.total_volume_credits
