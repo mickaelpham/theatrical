@@ -1,6 +1,3 @@
-Style/Documentation:
-  Enabled: false
-
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 
@@ -9,6 +6,13 @@ Lint/RaiseException:
 
 Lint/StructNewOverride:
   Enabled: true
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*.rb
+
+Style/Documentation:
+  Enabled: false
 
 Style/ExponentialNotation:
   Enabled: true

@@ -1,25 +1,21 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'logger'
-logger = Logger.new STDOUT
-logger.level = Logger::DEBUG
+# Load the application
+require_relative '../config/application'
 
 # Load the sample data
 require 'json'
 plays_file = File.read 'data/plays.json'
 plays = JSON.parse plays_file
-logger.debug "successfully loaded #{plays.size} play(s)"
+App.logger.debug "successfully loaded #{plays.size} play(s)"
 
 invoices_file = File.read 'data/invoices.json'
 invoices = JSON.parse invoices_file
-logger.debug "successfully loaded #{invoices.size} invoice(s)"
-
-# Load the application
-require_relative '../config/application'
+App.logger.debug "successfully loaded #{invoices.size} invoice(s)"
 
 # Generate the invoice statements and print them out to STDOUT
 statements = invoices.map { Invoice.statement(_1, plays) }.compact
-logger.debug "generated #{statements.size} statement(s)"
+App.logger.debug "generated #{statements.size} statement(s)"
 
 puts statements

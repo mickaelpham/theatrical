@@ -3,6 +3,13 @@
 source 'https://rubygems.org'
 
 gem 'money'
-gem 'pry-byebug', require: false
-gem 'rubocop', require: false
 gem 'zeitwerk'
+
+group :development, :test do
+  gem 'pry-byebug'
+  gem 'rubocop', require: false
+end
+
+group :test do
+  gem 'rspec'
+end
