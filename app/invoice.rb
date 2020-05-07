@@ -9,7 +9,7 @@ class Invoice
     result = "Statement for #{invoice['customer']}\n"
 
     invoice['performances'].each do |perf|
-      this_amount = amount_for(perf, play_for(perf))
+      this_amount = amount_for(perf)
 
       # add volume credits
       volume_credits += [perf['audience'] - 30, 0].max
@@ -36,10 +36,10 @@ class Invoice
   end
 
 
-  def self.amount_for(a_performance, play)
+  def self.amount_for(a_performance)
     result = 0
 
-    case play['type']
+    case play_for(a_performance)['type']
     when 'tragedy'
       result = 40_000
       result += 1_000 * (a_performance['audience'] - 30) if a_performance['audience'] > 30
@@ -54,7 +54,7 @@ class Invoice
       result += 300 * a_performance['audience']
 
     else
-      raise "unknown type: #{play['type']}"
+      raise "unknown type: #{play_for(a_performance)['type']}"
     end
 
     result
