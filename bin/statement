@@ -22,4 +22,4 @@ require_relative '../config/application'
 statements = invoices.map { Invoice.statement(_1, plays) }.compact
 logger.debug "generated #{statements.size} statement(s)"
 
-pp statements
+puts statements
