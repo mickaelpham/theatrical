@@ -2,12 +2,14 @@
 
 class Invoice
   def self.statement(invoice, plays)
+    @plays = plays
+
     total_amount = 0
     volume_credits = 0
     result = "Statement for #{invoice['customer']}\n"
 
     invoice['performances'].each do |perf|
-      play = plays[perf['playID']]
+      play = play_for(perf)
       this_amount = amount_for(perf, play)
 
       # add volume credits
@@ -28,6 +30,12 @@ class Invoice
 
     result
   end
+
+  def self.play_for(a_performance)
+    @plays ||= []
+    @plays[a_performance['playID']]
+  end
+
 
   def self.amount_for(a_performance, play)
     result = 0
