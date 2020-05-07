@@ -2,6 +2,7 @@
 
 class Invoice
   def self.statement(invoice, plays)
+    @invoice = invoice
     @plays = plays
 
     total_amount = 0
@@ -16,19 +17,25 @@ class Invoice
       total_amount += amount_for(perf)
     end
 
-    volume_credits = 0
-    invoice['performances'].each do |perf|
-      volume_credits += volume_credits_for(perf)
-    end
-
     result += "Amount owned is #{usd(total_amount)}\n"
-    result += "You earned #{volume_credits} credits\n"
+    result += "You earned #{total_volume_credits} credits\n"
 
     result
   end
 
   def self.usd(a_number)
     Money.us_dollar(a_number).format
+  end
+
+  def self.total_volume_credits
+    @invoice ||= { 'performances' => [] }
+
+    result = 0
+    @invoice['performances'].each do |perf|
+      result += volume_credits_for(perf)
+    end
+
+    result
   end
 
   def self.play_for(a_performance)
