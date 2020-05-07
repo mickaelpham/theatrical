@@ -29,22 +29,22 @@ class Invoice
     result
   end
 
-  def self.amount_for(perf, play)
+  def self.amount_for(a_performance, play)
     result = 0
 
     case play['type']
     when 'tragedy'
       result = 40_000
-      result += 1_000 * (perf['audience'] - 30) if perf['audience'] > 30
+      result += 1_000 * (a_performance['audience'] - 30) if a_performance['audience'] > 30
 
     when 'comedy'
       result = 30_000
 
-      if perf['audience'] > 20
-        result += 10_000 + 500 * (perf['audience'] - 20)
+      if a_performance['audience'] > 20
+        result += 10_000 + 500 * (a_performance['audience'] - 20)
       end
 
-      result += 300 * perf['audience']
+      result += 300 * a_performance['audience']
 
     else
       raise "unknown type: #{play['type']}"
