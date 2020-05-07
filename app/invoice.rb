@@ -4,17 +4,22 @@ class Invoice
   def self.statement(invoice, plays)
     @plays ||= plays
 
-    statement_data = {}
-
-    statement_data['customer'] = invoice['customer']
-    statement_data['performances'] =
-      invoice['performances'].map { enrich_performance(_1) }
-    statement_data['total_amount'] = total_amount(statement_data)
-    statement_data['total_volume_credits'] =
-      total_volume_credits(statement_data)
+    statement_data = create_statement_data(invoice)
 
     App.logger.debug(statement_data)
     render_plain_text(statement_data)
+  end
+
+  def self.create_statement_data(invoice)
+    result = {}
+
+    result['customer'] = invoice['customer']
+    result['performances'] =
+      invoice['performances'].map { enrich_performance(_1) }
+    result['total_amount'] = total_amount(result)
+    result['total_volume_credits'] = total_volume_credits(result)
+
+    result
   end
 
   def self.render_plain_text(data)
