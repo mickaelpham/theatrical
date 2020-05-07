@@ -57,16 +57,16 @@ class Invoice
     result
   end
 
-  def self.volume_credits_for(perf)
-    volume_credits = 0
+  def self.volume_credits_for(a_performance)
+    result = 0
 
-    volume_credits += [perf['audience'] - 30, 0].max
+    result += [a_performance['audience'] - 30, 0].max
 
     # add extra credit for every ten comedy attendees
-    if play_for(perf)['type'] == 'comedy'
-      volume_credits += (perf['audience'] / 5).floor
+    if play_for(a_performance)['type'] == 'comedy'
+      result += (a_performance['audience'] / 5).floor
     end
 
-    volume_credits
+    result
   end
 end
