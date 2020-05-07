@@ -5,18 +5,20 @@ class Invoice
     @plays = plays
 
     total_amount = 0
-    volume_credits = 0
     result = "Statement for #{invoice['customer']}\n"
 
     invoice['performances'].each do |perf|
-      volume_credits += volume_credits_for(perf)
-
       # print line for this order
       result += "  #{play_for(perf)['name']}: " \
                 "#{usd(amount_for(perf))} "\
                 "(#{perf['audience']} seats)\n"
 
       total_amount += amount_for(perf)
+    end
+
+    volume_credits += volume_credits_for(perf)
+    invoice['performances'].each do |perf|
+      volume_credits += volume_credits_for(perf)
     end
 
     result += "Amount owned is #{usd(total_amount)}\n"
