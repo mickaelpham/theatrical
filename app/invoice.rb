@@ -9,17 +9,16 @@ class Invoice
     result = "Statement for #{invoice['customer']}\n"
 
     invoice['performances'].each do |perf|
-      play = play_for(perf)
-      this_amount = amount_for(perf, play)
+      this_amount = amount_for(perf, play_for(perf))
 
       # add volume credits
       volume_credits += [perf['audience'] - 30, 0].max
 
       # add extra credit for every ten comedy attendees
-      volume_credits += (perf['audience'] / 5).floor if play['type'] == 'comedy'
+      volume_credits += (perf['audience'] / 5).floor if play_for(perf)['type'] == 'comedy'
 
       # print line for this order
-      result += "  #{play['name']}: #{Money.us_dollar(this_amount).format} "\
+      result += "  #{play_for(perf)['name']}: #{Money.us_dollar(this_amount).format} "\
                 "(#{perf['audience']} seats)\n"
 
       total_amount += this_amount
