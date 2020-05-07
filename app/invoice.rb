@@ -16,7 +16,7 @@ class Invoice
       total_amount += amount_for(perf)
     end
 
-    volume_credits += volume_credits_for(perf)
+    volume_credits = 0
     invoice['performances'].each do |perf|
       volume_credits += volume_credits_for(perf)
     end
