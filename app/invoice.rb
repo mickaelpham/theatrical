@@ -25,6 +25,7 @@ class Invoice
     result
   end
 
+  # rubocop:disable Metrics/MethodLength
   def self.render_html(data)
     result = <<~HTML
       <h1>Statement for #{data['customer']}</h1>
@@ -54,6 +55,7 @@ class Invoice
 
     result
   end
+  # rubocop:enable Metrics/MethodLength
 
   def self.usd(a_number)
     Money.us_dollar(a_number).format

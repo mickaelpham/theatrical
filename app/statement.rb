@@ -26,7 +26,7 @@ class Statement
 
   def self.enrich_performance(a_performance)
     calculator =
-      PerformanceCalculator.new(a_performance, play_for(a_performance))
+      PerformanceCalculator.of(a_performance, play_for(a_performance))
 
     # https://www.thoughtco.com/making-deep-copies-in-ruby-2907749
     result = Marshal.load(Marshal.dump(a_performance))

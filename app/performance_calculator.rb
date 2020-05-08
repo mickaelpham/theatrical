@@ -1,6 +1,17 @@
 # frozen_string_literal: true
 
 class PerformanceCalculator
+  def self.of(a_performance, a_play)
+    case a_play['type']
+    when 'tragedy'
+      TragedyCalculator.new(a_performance, a_play)
+    when 'comedy'
+      ComedyCalculator.new(a_performance, a_play)
+    else
+      raise "unknown type: #{a_play['type']}"
+    end
+  end
+
   attr_accessor :performance, :play
 
   def initialize(a_performance, a_play)
@@ -9,30 +20,7 @@ class PerformanceCalculator
   end
 
   def amount
-    result = 0
-
-    case play['type']
-    when 'tragedy'
-      result = 40_000
-
-      if performance['audience'] > 30
-        result += 1_000 * (performance['audience'] - 30)
-      end
-
-    when 'comedy'
-      result = 30_000
-
-      if performance['audience'] > 20
-        result += 10_000 + 500 * (performance['audience'] - 20)
-      end
-
-      result += 300 * performance['audience']
-
-    else
-      raise "unknown type: #{play['type']}"
-    end
-
-    result
+    raise 'subclass responsibility'
   end
 
   def volume_credits
