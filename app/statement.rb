@@ -5,6 +5,7 @@
 class Statement
   def self.create(invoice, plays)
     @plays = plays
+
     result = {}
 
     result['customer'] = invoice['customer']
@@ -24,10 +25,13 @@ class Statement
   end
 
   def self.enrich_performance(a_performance)
+    calculator =
+      PerformanceCalculator.new(a_performance, play_for(a_performance))
+
     # https://www.thoughtco.com/making-deep-copies-in-ruby-2907749
     result = Marshal.load(Marshal.dump(a_performance))
 
-    result['play'] = play_for(result)
+    result['play'] = calculator.play
     result['amount'] = amount_for(result)
     result['volume_credits'] = volume_credits_for(result)
 
