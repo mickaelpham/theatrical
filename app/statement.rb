@@ -32,7 +32,7 @@ class Statement
     result = Marshal.load(Marshal.dump(a_performance))
 
     result['play'] = calculator.play
-    result['amount'] = amount_for(result)
+    result['amount'] = calculator.amount
     result['volume_credits'] = volume_credits_for(result)
 
     result
@@ -42,7 +42,7 @@ class Statement
     result = 0
 
     data['performances'].each do |perf|
-      result += amount_for(perf)
+      result += perf['amount']
     end
 
     result
@@ -53,33 +53,6 @@ class Statement
 
     data['performances'].each do |perf|
       result += perf['volume_credits']
-    end
-
-    result
-  end
-
-  def self.amount_for(a_performance)
-    result = 0
-
-    case a_performance['play']['type']
-    when 'tragedy'
-      result = 40_000
-
-      if a_performance['audience'] > 30
-        result += 1_000 * (a_performance['audience'] - 30)
-      end
-
-    when 'comedy'
-      result = 30_000
-
-      if a_performance['audience'] > 20
-        result += 10_000 + 500 * (a_performance['audience'] - 20)
-      end
-
-      result += 300 * a_performance['audience']
-
-    else
-      raise "unknown type: #{a_performance['play']['type']}"
     end
 
     result
