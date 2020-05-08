@@ -1,4 +1,4 @@
-# Theatrical ![](https://github.com/mickaelpham/theatrical/workflows/Ruby/badge.svg)
+# Theatrical ![Ruby][workflow-ruby-badge]
 
 Following [Martin Fowler](https://martinfowler.com/) as we
 [refactor](https://martinfowler.com/books/refactoring.html) the theatrical
@@ -35,3 +35,6 @@ execute the application in `development` mode, e.g.:
 ```sh
 APP_ENV=development bin/statement
 ```
+
+[workflow-ruby-badge]:
+  https://github.com/mickaelpham/theatrical/workflows/Ruby/badge.svg
