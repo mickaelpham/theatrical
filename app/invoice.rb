@@ -13,16 +13,12 @@ class Invoice
     result = "Statement for #{data['customer']}\n"
 
     data['performances'].each do |perf|
-      # print line for this order
       result += "  #{perf['play']['name']}: " \
-                "#{usd(perf['amount'])} "\
-                "(#{perf['audience']} seats)\n"
+                "#{usd(perf['amount'])} (#{perf['audience']} seats)\n"
     end
 
     result += "Amount owned is #{usd(data['total_amount'])}\n"
-    result += "You earned #{data['total_volume_credits']} credits\n"
-
-    result
+    result + "You earned #{data['total_volume_credits']} credits\n"
   end
 
   # rubocop:disable Metrics/MethodLength

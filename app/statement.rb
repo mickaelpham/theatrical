@@ -31,30 +31,18 @@ class Statement
     # https://www.thoughtco.com/making-deep-copies-in-ruby-2907749
     result = Marshal.load(Marshal.dump(a_performance))
 
-    result['play'] = calculator.play
-    result['amount'] = calculator.amount
-    result['volume_credits'] = calculator.volume_credits
-
-    result
+    result.merge(
+      'play' => calculator.play,
+      'amount' => calculator.amount,
+      'volume_credits' => calculator.volume_credits
+    )
   end
 
   def self.total_amount(data)
-    result = 0
-
-    data['performances'].each do |perf|
-      result += perf['amount']
-    end
-
-    result
+    data['performances'].inject(0) { |sum, perf| sum + perf['amount'] }
   end
 
   def self.total_volume_credits(data)
-    result = 0
-
-    data['performances'].each do |perf|
-      result += perf['volume_credits']
-    end
-
-    result
+    data['performances'].inject(0) { |sum, perf| sum + perf['volume_credits'] }
   end
 end

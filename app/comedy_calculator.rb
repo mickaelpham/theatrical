@@ -8,9 +8,7 @@ class ComedyCalculator < PerformanceCalculator
       result += 10_000 + 500 * (performance['audience'] - 20)
     end
 
-    result += 300 * performance['audience']
-
-    result
+    result + 300 * performance['audience']
   end
 
   def volume_credits
