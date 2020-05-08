@@ -12,4 +12,9 @@ class ComedyCalculator < PerformanceCalculator
 
     result
   end
+
+  def volume_credits
+    # add extra credit for every ten comedy attendees
+    super + (performance['audience'] / 5).floor
+  end
 end

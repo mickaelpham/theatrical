@@ -24,11 +24,6 @@ class PerformanceCalculator
   end
 
   def volume_credits
-    result = [performance['audience'] - 30, 0].max
-
-    # add extra credit for every ten comedy attendees
-    result += (performance['audience'] / 5).floor if play['type'] == 'comedy'
-
-    result
+    [performance['audience'] - 30, 0].max
   end
 end
