@@ -33,7 +33,7 @@ class Statement
 
     result['play'] = calculator.play
     result['amount'] = calculator.amount
-    result['volume_credits'] = volume_credits_for(result)
+    result['volume_credits'] = calculator.volume_credits
 
     result
   end
@@ -53,19 +53,6 @@ class Statement
 
     data['performances'].each do |perf|
       result += perf['volume_credits']
-    end
-
-    result
-  end
-
-  def self.volume_credits_for(a_performance)
-    result = 0
-
-    result += [a_performance['audience'] - 30, 0].max
-
-    # add extra credit for every ten comedy attendees
-    if a_performance['play']['type'] == 'comedy'
-      result += (a_performance['audience'] / 5).floor
     end
 
     result
