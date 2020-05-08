@@ -1,4 +1,4 @@
-# Theatrical
+# Theatrical ![](https://github.com/mickaelpham/theatrical/workflows/Ruby/badge.svg)
 
 Following [Martin Fowler](https://martinfowler.com/) as we
 [refactor](https://martinfowler.com/books/refactoring.html) the theatrical
