@@ -23,6 +23,7 @@ GEM
       byebug (~> 11.0)
       pry (~> 0.13.0)
     rainbow (3.0.0)
+    rake (13.0.1)
     rexml (3.2.4)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
@@ -59,6 +60,7 @@ PLATFORMS
 DEPENDENCIES
   money
   pry-byebug
+  rake
   rspec
   rubocop
   simplecov

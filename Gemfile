@@ -7,6 +7,7 @@ gem 'zeitwerk'
 
 group :development, :test do
   gem 'pry-byebug'
+  gem 'rake', require: false
   gem 'rubocop', require: false
 end
 
