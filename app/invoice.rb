@@ -58,6 +58,6 @@ class Invoice
   # rubocop:enable Metrics/MethodLength
 
   def self.usd(a_number)
-    Money.us_dollar(a_number).format
+    Money.us_dollar(a_number).format(thousands_separator: ',')
   end
 end

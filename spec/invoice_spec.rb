@@ -41,8 +41,8 @@ RSpec.describe Invoice do
       let(:want) do
         <<~STATEMENT
           Statement for Lean Startup
-            The Miser: $1900.00 (#{attendees} seats)
-          Amount owned is $1900.00
+            The Miser: $1,900.00 (#{attendees} seats)
+          Amount owned is $1,900.00
           You earned 210 credits
         STATEMENT
       end
@@ -59,8 +59,8 @@ RSpec.describe Invoice do
       let(:want) do
         <<~STATEMENT
           Statement for Lean Startup
-            The Miser: $3100.00 (#{attendees} seats)
-          Amount owned is $3100.00
+            The Miser: $3,100.00 (#{attendees} seats)
+          Amount owned is $3,100.00
           You earned 270 credits
         STATEMENT
       end
