@@ -8,7 +8,6 @@ gem 'zeitwerk'
 group :development, :test do
   gem 'pry-byebug'
   gem 'rubocop', require: false
-  gem 'simplecov'
 end
 
 group :test do

@@ -5,6 +5,10 @@ class Invoice
     render_plain_text(Statement.create(invoice, plays))
   end
 
+  def self.html_statement(invoice, plays)
+    render_html(Statement.create(invoice, plays))
+  end
+
   def self.render_plain_text(data)
     result = "Statement for #{data['customer']}\n"
 
@@ -17,6 +21,36 @@ class Invoice
 
     result += "Amount owned is #{usd(data['total_amount'])}\n"
     result += "You earned #{data['total_volume_credits']} credits\n"
+
+    result
+  end
+
+  def self.render_html(data)
+    result = <<~HTML
+      <h1>Statement for #{data['customer']}</h1>
+      <table>
+        <tr>
+          <th>play</th>
+          <th>seats</th>
+          <th>cost</th>
+        </tr>
+    HTML
+
+    data['performances'].each do |perf|
+      result += <<~HTML
+        <tr>
+          <td>#{perf['play']['name']}</td>
+          <td>#{perf['audience']}</td>
+          <td>#{usd(perf['amount'])}</td>
+        </tr>
+      HTML
+    end
+
+    result += <<~HTML
+      </table>
+      <p>Amount owned is #{usd(data['total_amount'])}</p>
+      <p>You earned #{data['total_volume_credits']} credits</p>
+    HTML
 
     result
   end

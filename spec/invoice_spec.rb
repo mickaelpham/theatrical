@@ -74,9 +74,35 @@ RSpec.describe Invoice do
       let(:play_type) { 'sci-fi' }
 
       it 'raises a runtime error' do
-        expect { Invoice.statement(invoice, plays) }.
-          to raise_error "unknown type: sci-fi"
+        expect { Invoice.statement(invoice, plays) }
+          .to raise_error 'unknown type: sci-fi'
       end
+    end
+  end
+
+  describe 'html_statement' do
+    let(:want) do
+      <<~HTML
+        <h1>Statement for Lean Startup</h1>
+        <table>
+          <tr>
+            <th>play</th>
+            <th>seats</th>
+            <th>cost</th>
+          </tr>
+        <tr>
+          <td>The Miser</td>
+          <td>2</td>
+          <td>$306.00</td>
+        </tr>
+        </table>
+        <p>Amount owned is $306.00</p>
+        <p>You earned 0 credits</p>
+      HTML
+    end
+
+    it 'generates an invoice statement in HTML format' do
+      expect(Invoice.html_statement(invoice, plays)).to eq(want)
     end
   end
 end
